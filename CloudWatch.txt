@@ -1,0 +1,240 @@
+CloudWatch (Monitoring Service)
+-------------------------------
+Step1 : Create two EC2 machines
+        Name it as 1. Machine-1
+                   2. Machine-2
+
+Monitorig tab, helps you get the cloudWatch metrics like
+1. CPU Utilization
+2. Disk read (Bytes)
+3. Disk write (Bytes)
+4. Network packets in
+5. Network packets out etc
+
+This metics will be update every 5 mints.
+
+What is detailed monitoring ?
+we get the metrics for every one min (its paid service)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
+Lets go to cloudwatch dashboard.
+
+Services -->Management and Governance -->cloudwatch
+select Metrics --> EC2
+we can see all merics available.
+
+Select the required Machine and matrics, so that we can monitor.
+
++++++++++++++++++++++++++++++++++++++++++++++
+Setting up an Alarm, to take the action.
+
+Topic Name: TEST_TOPIC
+Alarm Name: My_alarm2
+
+++++++++++++++++++++++++++++++++++++
+How to set billing Alarm?
+
+Goto My Account --> Billing Preferences --> Select receive bill Alerts.
+
+In the navigation pane, choose Alarms, create Alarm.
+
+choose Select metric. In the all metrics tab, choose Billing Total Estimated Change.
+
+Select the check box next to EstimatedChanges, and choose Select metric.
+
+under Conditions, choose Static.
+
+For whenever Estimatedcharges is , choose Greater.
+
+For than, Enter the monetary amount (for example, 10) that must be exceeded to trigger the alarm.
+
+++++++++++++++++++++++++++
+Delection process
+------------------
+1. Delete Alarm
+2. Terminate EC2 Machine.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Cloud Trail
+============
+its an auditing service.
+
+In IAM, we have learnt how to create users, Groups,Assign user to groups etc.
+
+lets say, someone has deleted S3 bucket?
+How to know, which users has done this?
+At what time, its has happened?
+We can track this information using cloudTrail.
+All the activities can be tracked by user using cloudTrail.
+
+Services -- CloudTrail
+select event history
+
+Observation: We can see the records of the events which we have performed.
+
+Select a particular event, we can get more detail information.
+
+We can apply filters
+Filter: Resource type Bucket
+We can see the events related to the se Bucket
+
+We can apply filter based on time period
+We can download the list of events.
+
+Note: Root user can see the event history.
+IAM : user will not have access to see the event history.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Cloud Formation
+================
+3 ways to create AWS infrastructure 
+1. GUI    (console)
+2. CLI    ( command line Interface)
+3. IAAC   ( Infrastructure as a code : CloudFormation, Terraform)
+
+Code is written in JSON/Yaml Script
+When we run the code infrastructure will be created.
+
+Advantages:
+-----------
+We can store the code in S3 for repeated execution
+We can have version controlling
+
+Praticals:
+----------
+Services --> Management and Governance --> CloudFormation
+Create Stack --> Create Template in Designer
+Select Template tab (Select YAML radio button)
+Under Resource Types --> EC2 -->EC2 fleet --> Drag and Drop in the right side frame.
+We get the YAML Code
+
+--------------------
+Lets Goback and select sample template
+Select LAMP Stack -- (select view in designer to see the code -- newtab)
+Next -- Stack Name --Mystack
+        DB Password - welcome
+        DBRootPassword - welcome
+        DBUsername     - welcome
+        keyname        - cf
+
+Next --> Tags --> Name: LAMP Stack -->Next -->create Stack
+
+(We should able to see Webserver, Security group.
+ in webserver, PHP and MySQL will be installed)
+
+------------------------
+Goto Services -->EC2, we can see one EC2 machine gets created.
+Goto Security Group - One Security Group is also Created.
+
+-----------------------
+In stack Details dashboard -- outputs
+We get website URL (This is nothing but DNS name to the EC2 Machine)
+open the URL
+We get the default website.
+
+========================================================================================
+
+What is Terraform?
+Its similar for CloudFormation.
+By using terraform , we can create AWS / Azure / GCP infrastructure.
+
+----------------
+Deletion Process
+----------------
+Delete the Stack, Complete infrastructure gets deleted.
+(EC2 Machine is Terminated , Security group is also deleted)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Elastic Beanstalk
+------------------
+Mainly used by Developers
+Developers write the code for creating application.
+For testing the code , Developers needs Machine (EC2 instance)
+
+Developers are not inclined/ preffered to create infrastructure.
+The solution for developers is ElasticBeanstalk.
+
+Developer write the code, they upload the code into ElasticBeanStalk.
+Infrastructure wil be created automatically for testing the application.
+
+objective of cloudFormation is to Create Infrastructure
+Objective to ElasticBeanstalk is to test the Application
+
+Praticals:
+------------
+Service --> Compute --> Elastic Beanstalk
+Get started
+Application Name - MyApp
+platform - PHP
+
+Select Sample Application:
+--------------------------
+Create Application (it will take few min) Hit refresh in EC2 dashboard
+EC2 Machine is created , Code will be Deployed into the EC2 Machine
+Observation: Security group will also be created with the Application Name.
+
+How we can see the website,
+In MyApp dashboard -- we get environment ID and Application URL
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++
+Deleting The application
+In all Application
+Action -- Delete Application
+Automatically EC2 and Security Groups will be deleted.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+-------------------------------------------------------------------
+
+Snowball
+----------
+It is a data migration Service.
+
+Lets say, you have 1TB of data.
+You need to migrate 1TB Data to S3 bucket.
+Assume, it takes 1hr time to migrate.
+
+If the data is 100 TB?
+If the data is 1000 TB  (1 zeta byte)
+If the data is 100 ZB ?
+If the data is 1000 ZB ? (peta byte)
+If the data is 100 PB - it takes years to load the data.
+
+Ex: Facebook, will have huge amount of data 
+The solution, is snowball
+There are tree variants in snowball
+1. snowball
+2. snowball edge
+3. snowball mobile
+
+1. Snowball:
+---------------
+its physical hard disk, AWS will send to the client location.
+The Size of the snowball will be 80 TB
+
+Search in google "aws snowball" we can see the image of the snowball.
+
+2. Snowball edge:
+-----------------
+The Size is 100 TB
+Snowball edge contains compute capacity.
+It comes with display (similar to mobile phone)
+We can edit, delete from the display.
+
+Usecase: National Geographic Channel
+will take snowball edge to forest shoots etc
+
+Search in Google "AWS snowball edge"
+
+3. snow mobile:
+---------------
+The size is 100 PB
+its like truck.
+Search in google "aws snowball mobile"
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
